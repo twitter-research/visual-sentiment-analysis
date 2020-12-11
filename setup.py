@@ -15,7 +15,7 @@ requirements = [
     'torch==1.2.0',
     'torchvision==0.4.0',
     'numpy==1.16.6',
-    'pillow==6.2.2',
+    'pillow==7.1.0',
     'pandas==0.24.0',
     'requests==2.22.0',
 ]
