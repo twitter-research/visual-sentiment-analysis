@@ -8,8 +8,6 @@ Z. Al-Halah, A. Aitken, W. Shi, J. Caballero, *ICCV CroMoL workshop, 2019*
 
 If you use this code please reference the publication above.
 
-
-
 ## Installation
 
 All requirements can be install by running:
@@ -36,10 +34,14 @@ The script `train_model.sh` will train a network to perform image to emoji predi
 
 The script `test_model.sh` will test the model on a set of images.
 
-## Contributing
-We appreciate all contributions. If you are planning to contribute back bug-fixes, please do so without any further discussion. If you plan to contribute new features, utility functions or extensions, please first open an issue to discuss the feature.
+## Cite us
 
-
+	@inproceedings{tgn_icml_grl2020,
+	    title={Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis},
+	    author={Ziad Al-Halah and Andrew Aitken and Wenzhe Shi and Jose Caballero},
+	    booktitle={ICCV 2019 Workshop on Cross-Modal Learning in Real World},
+	    year={2019}
+	}
 
 ## Security Issues?
 Please report sensitive security issues via Twitter's bug-bounty program (https://hackerone.com/twitter) rather than GitHub.
