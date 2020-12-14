@@ -36,7 +36,7 @@ The script `test_model.sh` will test the model on a set of images.
 
 ## Cite us
 
-	@inproceedings{tgn_icml_grl2020,
+	@inproceedings{visualsent_iccv_cromol2019,
 	    title={Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis},
 	    author={Ziad Al-Halah and Andrew Aitken and Wenzhe Shi and Jose Caballero},
 	    booktitle={ICCV 2019 Workshop on Cross-Modal Learning in Real World},
