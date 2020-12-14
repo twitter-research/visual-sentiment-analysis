@@ -1,4 +1,8 @@
 #!/usr/bin/env bash
+# Copyright 2020 Twitter, Inc.
+# Licensed under the Apache License, Version 2.0
+# http://www.apache.org/licenses/LICENSE-2.0
+
 
 DATE_TIME=$(date +%m%d%k%M)
 SAVE_DIR="experiments/model_train/${DATE_TIME}"
