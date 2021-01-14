@@ -3,7 +3,7 @@
 
 Visual SmileyNet is a library for training an image to emoji neural network model. It contains functionality used to produce the results in the paper:
 
-[Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis](https://arxiv.org/abs/1907.06160)  
+[Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis](https://arxiv.org/abs/1907.06160)
 Z. Al-Halah, A. Aitken, W. Shi, J. Caballero, *ICCV CroMoL workshop, 2019*
 
 If you use this code please reference the publication above.
@@ -18,11 +18,16 @@ All requirements can be install by running:
 With python=3.7:
 
 	torch==1.2.0
-	torchvision==0.4.0  
-	numpy==1.16.6  
-	pillow==6.2.2  
-	pandas==0.24.0  
-	requests==2.22.0  
+	torchvision==0.4.0
+	numpy==1.16.6
+	pillow==6.2.2
+	pandas==0.24.0
+	requests==2.22.0
+
+## Visual Smiley Dataset
+
+You can download the visual smiley dataset used in this work from [here](https://twitter.app.box.com/v/visual-smiley-dataset)
+
 
 ## Getting Started
 
