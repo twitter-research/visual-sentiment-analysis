@@ -17,5 +17,5 @@ python scripts/model_train.py \
   --log_interval 1 \
   --optimizer "Adam" \
   --lr 1e-4 \
-  --train_epochs 2 \
+  --train_epochs 20 \
   --sampler_type "rnd"
