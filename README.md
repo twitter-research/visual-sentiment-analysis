@@ -6,6 +6,8 @@ Visual SmileyNet is a library for training an image to emoji neural network mode
 [Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis](https://arxiv.org/abs/1907.06160)
 Z. Al-Halah, A. Aitken, W. Shi, J. Caballero, *ICCV CroMoL workshop, 2019*
 
+For more information on this work please visit the [project page](https://www.cs.utexas.edu/~ziad/emoji_visual_sentiment.html).
+
 If you use this code please reference the publication above.
 
 ## Installation
@@ -26,14 +28,20 @@ With python=3.7:
 
 ## Visual Smiley Dataset
 
-You can download the visual smiley dataset used in this work from [here](https://twitter.app.box.com/v/visual-smiley-dataset)
+You can download the visual smiley dataset used in this work from [here](https://twitter.app.box.com/v/visual-smiley-dataset).
 
 
 ## Getting Started
 
 ### Training
 
-The script `train_model.sh` will train a network to perform image to emoji predictions.
+The script `train_model.sh` will train a network to perform image to emoji predictions. The script `train_model_toy.sh` will run the training of a model on a very small subset of the dataset. This can be used to get familiar with the training script before running on the full dataset.
+
+To start training a model on the Visual SmileyNet dataset you can follow these steps:
+
+1. Download the Visual SmileyNet dataset from [here](https://twitter.app.box.com/v/visual-smiley-dataset).
+2. Extract the dataset and save the folder location in environment variable DATA_DIR with `export DATA_DIR=</dataset/location/Visual Smiley Dataset>`
+3. Run the training script with `sh sh_scripts/train_model.sh`. Alternatively, running `sh sh_scripts/train_model_toy.sh` will run on small subset of the dataset.
 
 ### Testing
 
