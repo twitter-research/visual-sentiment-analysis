@@ -33,6 +33,19 @@ def read_category_list(csv_file, column_name=COLUMN_NAME_CATEGORY):
   return categories_list
 
 
+def get_topK_emoji_unicode(predictions, emoji_unicode_list, k=5):
+
+  k = min(k, predictions.shape[1])
+
+  top5_emoji_unicode = []
+  for prediction in predictions:
+    top5_ids = prediction.argsort()[-k:][::-1]
+    top5_emoji = [emoji_unicode_list[id] for id in top5_ids]
+    top5_emoji_unicode.append(top5_emoji)
+
+  return top5_emoji_unicode
+
+
 class PeekDataset(Dataset):
   """
   A wrapper for base pytorch Dataset class that has a peek method to check if a sample is safe to fetch
