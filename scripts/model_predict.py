@@ -13,15 +13,16 @@ import os
 import random
 import logging
 
+from os import listdir
+from os.path import isfile, join
+
 import data.datasets as datasets
 from data.samplers import collate_ignore_nones
-from data.transformers import MultiLabelBinarizer
 from model import nn_factory as nf
 from model.train import Trainer
 from utils import log as log_util
 
 import torch
-import torchvision.transforms as transforms
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -31,7 +32,7 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   # data
-  parser.add_argument('--test_csv', type=str, default=None, help='csv file with testing samples')
+  parser.add_argument('--image_dir', type=str, default=None, help='directory containing images')
   parser.add_argument('--category_csv', type=str, default=None, help='csv file with category names')
   parser.add_argument('--save_dir', type=str, default=None, help='save directory')
   # model
@@ -72,7 +73,7 @@ if __name__ == '__main__':
       else:
         logger.info('directory successfully created')
 
-    log_file = os.path.join('.', 'log_model_test.txt')
+    log_file = os.path.join('.', 'log_model_predict.txt')
     log_util.add_file_handler(logger, log_file=log_file, add_to_root=True)
 
   logger.info('{}'.format(opt))
@@ -84,7 +85,7 @@ if __name__ == '__main__':
   torch.manual_seed(opt.seed)
 
   # set tensorboardX
-  log_dir = './plogs_test'
+  log_dir = './plogs_predict'
   if opt.save_dir is not None:
     log_dir = opt.save_dir
 
@@ -97,13 +98,17 @@ if __name__ == '__main__':
   n_categories = len(categories_list)
   logger.info('number of categories: {}'.format(n_categories))
 
+  # Save image paths to csv
+  image_paths_file = os.path.join(opt.save_dir, 'test.csv')
+  datasets.save_paths_to_csv_dataset(opt.image_dir, image_paths_file)
+
   # set sample transformers
   image_transform = nf.get_default_image_transform(augmentation=False)
   logger.info('image transforms: {}'.format(image_transform))
 
   # create a dataset
   logger.info('Create a testing EmojiDataset')
-  test_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=opt.test_csv,
+  test_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=image_paths_file,
                                   input_transform=image_transform, suppress_exceptions=True)
   logger.info('Number of samples in testing file: {}'.format(test_ds.n_samples))
 
@@ -168,14 +173,14 @@ if __name__ == '__main__':
 
   # Save all score predictions to csv
   outfile_all_scores = os.path.join(opt.save_dir, '{}_all_scores.csv'.format(model_fname))
-  logger.info('save test results to {}'.format(outfile_all_scores))
+  logger.info('save predict results to {}'.format(outfile_all_scores))
   df = pd.DataFrame(predictions)
   df.insert(0, 'url', urls)
   df.to_csv(outfile_all_scores, header=None, index=None)
 
   # Save top K emoji predictions to csv
   outfile_topK_emoji = os.path.join(opt.save_dir, '{}_top{}_emoji.csv'.format(model_fname, opt.predict_top_k))
-  logger.info('save test results to {}'.format(outfile_topK_emoji))
+  logger.info('save predict results to {}'.format(outfile_topK_emoji))
   df = pd.DataFrame(topK_emoji_unicode)
   df.insert(0, 'url', urls)
   df.to_csv(outfile_topK_emoji, header=None, index=None)
@@ -183,6 +188,6 @@ if __name__ == '__main__':
   logger.info('Run time: {}'.format(datetime.now() - tm_start))
   if log_file is not None and os.path.exists(log_file):
     tms = '_' + datetime.now().strftime('%Y%m%d%H%M%S')
-    shutil.copy(log_file, os.path.join(opt.save_dir, 'log_test{}.txt'.format(tms)))
+    shutil.copy(log_file, os.path.join(opt.save_dir, 'log_predict{}.txt'.format(tms)))
 
   logger.info('END')

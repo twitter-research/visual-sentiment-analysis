@@ -5,6 +5,7 @@ http://www.apache.org/licenses/LICENSE-2.0
 """
 import ast
 import io
+import os
 import logging
 import requests
 
@@ -45,6 +46,12 @@ def get_topK_emoji_unicode(predictions, emoji_unicode_list, k=5):
 
   return top5_emoji_unicode
 
+def save_paths_to_csv_dataset(image_dir, output_csv):
+  images_paths = [(os.path.join(image_dir, f)) for f in os.listdir(image_dir)
+    if os.path.isfile(os.path.join(image_dir, f))]
+  df = pd.DataFrame(images_paths, columns=['url'])
+  df['labels'] = ['[0]'] * len(images_paths)
+  df.to_csv(output_csv, index=None)
 
 class PeekDataset(Dataset):
   """
@@ -171,15 +178,19 @@ class EmojiDataset(PeekDataset):
     logger.debug('getting sample {} from url {}'.format(index, url))
     img = None
     try:
-      img_bytes = self._get_image_from_url(url)
-      if not isinstance(img_bytes, Exception):
-        img = Image.open(io.BytesIO(img_bytes))
-        img = img.convert('RGB')  # make sure it's a 3 channel image
-      else:
-        if self.suppress_exceptions:
-          return None, None
+      if url.startswith('http'):
+        img_bytes = self._get_image_from_url(url)
+        if not isinstance(img_bytes, Exception):
+          img = Image.open(io.BytesIO(img_bytes))
+          img = img.convert('RGB')  # make sure it's a 3 channel image
         else:
-          raise Exception('failed to fetch image {} from url {}'.format(index, img_bytes))
+          if self.suppress_exceptions:
+            return None, None
+          else:
+            raise Exception('failed to fetch image {} from url {}'.format(index, img_bytes))
+      else:
+        img = Image.open(url)
+        img = img.convert('RGB')  # make sure it's a 3 channel image
 
     except Exception as exc:
       logger.debug('failed to get {}: {}'.format(index, exc))
