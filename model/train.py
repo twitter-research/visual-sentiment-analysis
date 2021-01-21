@@ -98,6 +98,32 @@ class Trainer(object):
     metric_train = self.compute_metrics(eval=False)
     return train_loss, metric_train
 
+  def predict(self, device='cpu', epoch=0, log_interval=10):
+    n_batches = len(self.eval_data_loader)
+    n_samples = 0
+    tm_epoch = datetime.now()
+
+    self.model.eval()
+    index_map = []
+    predictions = []
+    with torch.no_grad():
+      for batch_idx, batch_data in enumerate(self.eval_data_loader):
+        data = batch_data[0].to(device)
+        predictions.append(self.model(data))
+        index_map.append(batch_data[2])
+        n_samples += len(data)
+
+        if batch_idx % log_interval == 0:
+          logger.info('E_{:02d} ({:5.2f}%) [{:5d}/{}] remaining time {}'.format(
+            epoch,
+            100. * batch_idx / n_batches,
+            n_samples, n_batches * self.eval_data_loader.batch_size,
+            ((datetime.now() - tm_epoch) / (batch_idx + 1)) * (n_batches - batch_idx)))
+        if batch_idx >= n_batches:
+          break
+
+    return torch.cat(predictions, dim=0), torch.cat(index_map, dim=0)
+
   def eval(self, max_iter=-1, device='cpu', epoch=0, log_interval=10):
     n_batches = len(self.eval_data_loader)
     if max_iter > 0:
