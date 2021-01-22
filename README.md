@@ -47,9 +47,13 @@ To start training a model on the Visual SmileyNet dataset you can follow these s
 
 The script `test_model.sh` will test the model on a set of images.
 
+Usage: `sh sh_scripts/test_model.sh <path-to-model-file>`
+
 ### Predicting emojis
 
 The script `predict_emojis.sh` will find the top emoji predictions for a folder of images.
+
+Usage: `sh sh_scripts/predict_emojis.sh <path-to-model-file> <path-to-dir-of-images>`
 
 ## Cite us
 
