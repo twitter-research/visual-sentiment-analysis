@@ -33,10 +33,14 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   # data
-  parser.add_argument('--train_csv', type=str, default=None, help='csv file with training samples')
-  parser.add_argument('--val_csv', type=str, default=None, help='csv file with validation samples')
-  parser.add_argument('--category_csv', default=None, type=str, help='csv file with category names')
-  parser.add_argument('--save_dir', default=None, type=str, help='save directory')
+  parser.add_argument('--train_csv', type=str, default=None,
+                      help='csv file with training samples')
+  parser.add_argument('--val_csv', type=str, default=None,
+                      help='csv file with validation samples')
+  parser.add_argument('--category_csv', default=None, type=str,
+                      help='csv file with category names')
+  parser.add_argument('--save_dir', default=None, type=str,
+                      help='save directory')
   # model
   parser = nf.add_model_parser_arguments(parser)
   # optim
@@ -47,49 +51,43 @@ if __name__ == '__main__':
   parser.add_argument('--scheduler_gamma', type=float, default=0.1,
                       help='multiplicative factor of learning rate decay')
 
-  parser.add_argument('--train_steps', type=int, default=-
-                      1, help='number of iterations on training data for one epoch')
+  parser.add_argument('--train_steps', type=int, default=-1,
+                      help='number of iterations on training data for one epoch')
   parser.add_argument('--train_epochs', type=int, default=1,
                       help='number of epochs on training data')
-  parser.add_argument(
-      '--train_layers_epochs',
-      type=int,
-      default=-1,
-      help='number of epochs to train selected layers before switching to training all layers')
-  parser.add_argument(
-      '--sampler_type',
-      type=str,
-      default='rnd',
-      choices=[
-          'rnd',
-          'wc_rnd',
-          'seq'],
-      help='type of the training data sampler')
-  parser.add_argument('--sampler_persistent', action='store_true', help='use a persistent sampler')
-  parser.add_argument('--start_epoch', type=int, default=1, help='index of the start epoch')
-  parser.add_argument('--input_aug', action='store_true', help='enable input augmentation')
-  parser.add_argument('--color_aug', action='store_true', help='enable color augmentation')
-  parser.add_argument('--batch_size', type=int, default=64, help='batch size for training')
-  parser.add_argument(
-      '--weighted_pos',
-      action='store_true',
-      help='weight positive samples for each class in balance with negatives')
+  parser.add_argument('--train_layers_epochs', type=int, default=-1,
+                      help='number of epochs to train selected layers before switching to training all layers')
+  parser.add_argument('--sampler_type', type=str, default='rnd',
+                      choices=['rnd', 'wc_rnd', 'seq'],
+                      help='type of the training data sampler')
+  parser.add_argument('--sampler_persistent', action='store_true',
+                      help='use a persistent sampler')
+  parser.add_argument('--start_epoch', type=int, default=1,
+                      help='index of the start epoch')
+  parser.add_argument('--input_aug', action='store_true',
+                      help='enable input augmentation')
+  parser.add_argument('--color_aug', action='store_true',
+                      help='enable color augmentation')
+  parser.add_argument('--batch_size', type=int, default=64,
+                      help='batch size for training')
+  parser.add_argument('--weighted_pos', action='store_true',
+                      help='weight positive samples for each class in balance with negatives')
   parser.add_argument('--weighted_pos_max', type=float, default=None,
                       help='maximum weight of positive samples for all class')
-  parser.add_argument('--eval_steps', type=int, default=-
-                      1, help='number of iterations on evaluation data for one epoch')
-  parser.add_argument('--eval_batch_size', type=int, default=128, help='batch size for evaluation')
+  parser.add_argument('--eval_steps', type=int, default=-1,
+                      help='number of iterations on evaluation data for one epoch')
+  parser.add_argument('--eval_batch_size', type=int, default=128,
+                      help='batch size for evaluation')
   parser.add_argument('--best_metric', type=str, default='AUC',
                       help='the evaluation metric used to select best model')
   parser.add_argument('--num_workers', type=int, default=0,
                       help='number of workers for data loader')
-  parser.add_argument('--seed', type=int, default=-1, help='set random seed')
-  parser.add_argument('--no_gpu', action='store_true', help='do not use GPUs')
+  parser.add_argument('--seed', type=int, default=-1,
+                      help='set random seed')
+  parser.add_argument('--no_gpu', action='store_true',
+                      help='do not use GPUs')
   # logging
-  parser.add_argument(
-      '--log_level',
-      type=str,
-      default=logging.INFO)
+  parser.add_argument('--log_level', type=str, default=logging.INFO)
   parser.add_argument('--log_interval', type=int, default=100,
                       help='logging interval in terms of iterations')
 
@@ -138,12 +136,18 @@ if __name__ == '__main__':
 
   # create a dataset
   logger.info('Create a training EmojiDataset')
-  train_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=opt.train_csv,
-                                   input_transform=image_transform_train, target_transform=label_transform, suppress_exceptions=True)
+  train_ds = datasets.EmojiDataset(categories_list=categories_list,
+                                   samples_csv_file=opt.train_csv,
+                                   input_transform=image_transform_train,
+                                   target_transform=label_transform,
+                                   suppress_exceptions=True)
   logger.info('Number of samples in training file: {}'.format(train_ds.n_samples))
   logger.info('Create a validation EmojiDataset')
-  valid_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=opt.val_csv,
-                                   input_transform=image_transform_eval, target_transform=label_transform, suppress_exceptions=True)
+  valid_ds = datasets.EmojiDataset(categories_list=categories_list,
+                                   samples_csv_file=opt.val_csv,
+                                   input_transform=image_transform_eval,
+                                   target_transform=label_transform,
+                                   suppress_exceptions=True)
   logger.info('Number of samples in validation file: {}'.format(valid_ds.n_samples))
 
   # create data samplers
@@ -174,10 +178,19 @@ if __name__ == '__main__':
               torch.zeros(n_categories))])
   # create loaders
   logger.info('Create data loaders')
-  train_dataloader = torch.utils.data.DataLoader(train_ds, sampler=train_sampler,
-                                                 batch_size=opt.batch_size, shuffle=False, num_workers=opt.num_workers, collate_fn=collate_fn)
-  eval_dataloader = torch.utils.data.DataLoader(valid_ds, sampler=valid_sampler,
-                                                batch_size=opt.eval_batch_size, shuffle=False, num_workers=opt.num_workers, collate_fn=collate_fn, drop_last=False)
+  train_dataloader = torch.utils.data.DataLoader(train_ds,
+                                                 sampler=train_sampler,
+                                                 batch_size=opt.batch_size,
+                                                 shuffle=False,
+                                                 num_workers=opt.num_workers,
+                                                 collate_fn=collate_fn)
+  eval_dataloader = torch.utils.data.DataLoader(valid_ds,
+                                                sampler=valid_sampler,
+                                                batch_size=opt.eval_batch_size,
+                                                shuffle=False,
+                                                num_workers=opt.num_workers,
+                                                collate_fn=collate_fn,
+                                                drop_last=False)
 
   # model
   logger.info('=' * 25)
@@ -198,7 +211,9 @@ if __name__ == '__main__':
   if opt.scheduler_step_size > 0:
     logger.info('setup learning rate scheduler')
     lr_scheduler = torch.optim.lr_scheduler.StepLR(optimizer,
-                                                   step_size=opt.scheduler_step_size, gamma=opt.scheduler_gamma, last_epoch=-1)
+                                                   step_size=opt.scheduler_step_size,
+                                                   gamma=opt.scheduler_gamma,
+                                                   last_epoch=-1)
 
   # Loss
   logger.info('setup loss')
@@ -279,7 +294,9 @@ if __name__ == '__main__':
       if trainer.lr_scheduler is not None:
         logger.info('reset scheduler')
         trainer.lr_scheduler = torch.optim.lr_scheduler.StepLR(trainer.optimizer,
-                                                               step_size=opt.scheduler_step_size, gamma=opt.scheduler_gamma, last_epoch=-1)
+                                                               step_size=opt.scheduler_step_size,
+                                                               gamma=opt.scheduler_gamma,
+                                                               last_epoch=-1)
 
   logger.info('Run time: {}'.format(datetime.now() - tm_start))
   if log_file is not None and os.path.exists(log_file):

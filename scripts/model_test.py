@@ -32,23 +32,28 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   # data
-  parser.add_argument('--test_csv', type=str, default=None, help='csv file with testing samples')
-  parser.add_argument('--category_csv', type=str, default=None, help='csv file with category names')
-  parser.add_argument('--save_dir', type=str, default=None, help='save directory')
+  parser.add_argument('--test_csv', type=str, default=None,
+                      help='csv file with testing samples')
+  parser.add_argument('--category_csv', type=str, default=None,
+                      help='csv file with category names')
+  parser.add_argument('--save_dir', type=str, default=None,
+                      help='save directory')
   # model
-  parser.add_argument('--model_file', type=str, default=None, help='model file path')
-  parser.add_argument('--batch_size', type=int, default=64, help='batch size for training')
-  parser.add_argument('--test_steps', type=int, default=-
-                      1, help='number of iterations on evaluation data for one epoch')
+  parser.add_argument('--model_file', type=str, default=None,
+                      help='model file path')
+  parser.add_argument('--batch_size', type=int, default=64,
+                      help='batch size for training')
+  parser.add_argument('--test_steps', type=int, default=-1,
+                      help='number of iterations on evaluation data for one epoch')
   parser.add_argument('--num_workers', type=int, default=0,
                       help='number of workers for data loader')
-  parser.add_argument('--seed', type=int, default=-1, help='set random seed')
-  parser.add_argument('--no_gpu', action='store_true', help='do not use GPUs')
+  parser.add_argument('--seed', type=int, default=-1,
+                      help='set random seed')
+  parser.add_argument('--no_gpu', action='store_true',
+                      help='do not use GPUs')
   # qualitative results
-  parser.add_argument(
-      '--no_qualitative',
-      action='store_true',
-      help='disable qualitative evaluation')
+  parser.add_argument('--no_qualitative', action='store_true',
+                      help='disable qualitative evaluation')
   parser.add_argument('--per_class_samples', type=int, default=20,
                       help='the number of most confident samples per class to visualize')
   parser.add_argument('--multilabel_samples', type=int, default=30,
@@ -58,10 +63,7 @@ if __name__ == '__main__':
   parser.add_argument('--image_size', type=int, default=256,
                       help='image size for qualitative results')
   # logging
-  parser.add_argument(
-      '--log_level',
-      type=str,
-      default=logging.INFO)
+  parser.add_argument('--log_level', type=str, default=logging.INFO)
   parser.add_argument('--log_interval', type=int, default=100,
                       help='logging interval in terms of iterations')
 
@@ -117,8 +119,11 @@ if __name__ == '__main__':
 
   # create a dataset
   logger.info('Create a testing EmojiDataset')
-  test_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=opt.test_csv,
-                                  input_transform=image_transform, target_transform=label_transform, suppress_exceptions=True)
+  test_ds = datasets.EmojiDataset(categories_list=categories_list,
+                                  samples_csv_file=opt.test_csv,
+                                  input_transform=image_transform,
+                                  target_transform=label_transform,
+                                  suppress_exceptions=True)
   logger.info('Number of samples in testing file: {}'.format(test_ds.n_samples))
 
   # set batch collate
@@ -132,12 +137,11 @@ if __name__ == '__main__':
               torch.zeros(n_categories))])
   # create loaders
   logger.info('Create data loaders')
-  test_dataloader = torch.utils.data.DataLoader(
-      test_ds,
-      batch_size=opt.batch_size,
-      shuffle=False,
-      num_workers=opt.num_workers,
-      collate_fn=collate_fn)
+  test_dataloader = torch.utils.data.DataLoader(test_ds,
+                                                batch_size=opt.batch_size,
+                                                shuffle=False,
+                                                num_workers=opt.num_workers,
+                                                collate_fn=collate_fn)
 
   # model
   logger.info('=' * 25)
@@ -146,7 +150,9 @@ if __name__ == '__main__':
   logger.info('in checkpoint: {}'.format(checkpoint.keys()))
   model_name = checkpoint['opt'].net_name
   logger.info('model type: {}'.format(model_name))
-  model = nf.create_and_init_model(model_name, checkpoint['model_state'], output_size=n_categories)
+  model = nf.create_and_init_model(model_name,
+                                   checkpoint['model_state'],
+                                   output_size=n_categories)
   # check if there is a gpu
   device = torch.device('cuda' if torch.cuda.is_available() and not opt.no_gpu else 'cpu')
   logger.info('using device: {}'.format(device))
@@ -169,17 +175,13 @@ if __name__ == '__main__':
   metrics.add_default_eval_metrics(tester, max_k=n_categories - 1)
   if not opt.no_qualitative:
     logger.info('add qualitative metrics')
-    tester.add_metric(
-        'TopBPred',
-        metrics.TopBinaryPredictions(
-            n_samples=opt.per_class_samples),
-        eval=True)
-    tester.add_metric(
-        'TopMPred',
-        metrics.TopMultiLabelPredictions(
-            n_samples=opt.multilabel_samples,
-            k=opt.multilabel_k),
-        eval=True)
+    tester.add_metric('TopBPred',
+                      metrics.TopBinaryPredictions(n_samples=opt.per_class_samples),
+                      eval=True)
+    tester.add_metric('TopMPred',
+                      metrics.TopMultiLabelPredictions(n_samples=opt.multilabel_samples,
+                                                       k=opt.multilabel_k),
+                      eval=True)
 
   # testing
   epoch = checkpoint['epoch']

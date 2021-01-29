@@ -32,25 +32,29 @@ if __name__ == '__main__':
 
   parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
   # data
-  parser.add_argument('--image_dir', type=str, default=None, help='directory containing images')
-  parser.add_argument('--category_csv', type=str, default=None, help='csv file with category names')
-  parser.add_argument('--save_dir', type=str, default=None, help='save directory')
+  parser.add_argument('--image_dir', type=str, default=None,
+                      help='directory containing images')
+  parser.add_argument('--category_csv', type=str, default=None,
+                      help='csv file with category names')
+  parser.add_argument('--save_dir', type=str, default=None,
+                      help='save directory')
   # model
-  parser.add_argument('--model_file', type=str, default=None, help='model file path')
-  parser.add_argument('--batch_size', type=int, default=64, help='batch size for training')
+  parser.add_argument('--model_file', type=str, default=None,
+                      help='model file path')
+  parser.add_argument('--batch_size', type=int, default=64,
+                      help='batch size for training')
   parser.add_argument('--num_workers', type=int, default=0,
                       help='number of workers for data loader')
-  parser.add_argument('--seed', type=int, default=-1, help='set random seed')
-  parser.add_argument('--no_gpu', action='store_true', help='do not use GPUs')
+  parser.add_argument('--seed', type=int, default=-1,
+                      help='set random seed')
+  parser.add_argument('--no_gpu', action='store_true',
+                      help='do not use GPUs')
   parser.add_argument('--image_size', type=int, default=256,
                       help='image size for qualitative results')
   parser.add_argument('--predict_top_k', type=int, default=5,
                       help='number of top predictions to save to file')
   # logging
-  parser.add_argument(
-      '--log_level',
-      type=str,
-      default=logging.INFO)
+  parser.add_argument('--log_level', type=str, default=logging.INFO)
   parser.add_argument('--log_interval', type=int, default=100,
                       help='logging interval in terms of iterations')
 
@@ -108,8 +112,10 @@ if __name__ == '__main__':
 
   # create a dataset
   logger.info('Create a testing EmojiDataset')
-  test_ds = datasets.EmojiDataset(categories_list=categories_list, samples_csv_file=image_paths_file,
-                                  input_transform=image_transform, suppress_exceptions=True)
+  test_ds = datasets.EmojiDataset(categories_list=categories_list,
+                                  samples_csv_file=image_paths_file,
+                                  input_transform=image_transform,
+                                  suppress_exceptions=True)
   logger.info('Number of samples in testing file: {}'.format(test_ds.n_samples))
 
   # set batch collate
@@ -123,12 +129,11 @@ if __name__ == '__main__':
               torch.zeros(n_categories))])
   # create loaders
   logger.info('Create data loaders')
-  test_dataloader = torch.utils.data.DataLoader(
-      test_ds,
-      batch_size=opt.batch_size,
-      shuffle=False,
-      num_workers=opt.num_workers,
-      collate_fn=collate_fn)
+  test_dataloader = torch.utils.data.DataLoader(test_ds,
+                                                batch_size=opt.batch_size,
+                                                shuffle=False,
+                                                num_workers=opt.num_workers,
+                                                collate_fn=collate_fn)
 
   # model
   logger.info('=' * 25)
