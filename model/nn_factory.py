@@ -21,9 +21,6 @@ INET_MEAN = [0.485, 0.456, 0.406]
 INET_STD = [0.229, 0.224, 0.225]
 INET_IMG_SIZE = 224
 
-HDFS_ROOT = 'hdfs:/user/magicpony/visual_sentiment/devel/pytorch_model_zoo/imagenet/'
-DEFAULT_CACHE_DIR = './pytorch_model_zoo_imagenet/'
-
 NETWORK_REL_PATH = {
     'alexnet': 'alexnet',
     'densenet121': 'densenet/densenet121',
@@ -158,17 +155,13 @@ def setup_model(output_size, device, opt, load_state=False):
 
 
 def add_model_parser_arguments(parser):
-  parser.add_argument(
-      '--net_name',
-      type=str,
-      default='resnet50',
-      choices=NETWORK_IDS,
-      help='name of neural network from model zoo')
-  parser.add_argument(
-      '--net_pretrained',
-      action='store_true',
-      help='load pretrained weights from imagenet')
-  parser.add_argument('--resume', type=str, default=None, help='resume from this checkpoint file')
+  parser.add_argument('--net_name', type=str, default='resnet50',
+                      choices=NETWORK_IDS,
+                      help='name of neural network from model zoo')
+  parser.add_argument('--net_pretrained', action='store_true',
+                      help='load pretrained weights from imagenet')
+  parser.add_argument('--resume', type=str, default=None,
+                      help='resume from this checkpoint file')
   parser.add_argument('--train_layers', type=str, default=None,
                       help='train only this list of layers, comma seperated list ')
   return parser
@@ -237,23 +230,26 @@ def setup_optimizer(model, opt, load_state=False):
 
 
 def add_optim_parser_arguments(parser):
-  parser.add_argument('--optimizer', type=str, default='SGD', help='optimization method')
-  parser.add_argument('--lr', type=float, default=0.001, help='learning rate')
-  parser.add_argument('--weight_decay', type=float, default=0.0, help='weight decay')
-  parser.add_argument('--momentum', type=float, default=0.0, help='SGD: learning rate momentum')
-  parser.add_argument('--nesterov', action='store_true', help='SGD: enables Nesterov momentum ')
-  parser.add_argument('--b1', type=float, default=0.9, help='Adam: beta 1 ')
-  parser.add_argument('--b2', type=float, default=0.999, help='Adam: beta 2')
-  parser.add_argument(
-      '--amsgrad',
-      action='store_true',
-      help='Adam: whether to use the AMSGrad variant')
-  parser.add_argument('--lr_decay', type=float, default=0.0, help='Adagrad: learning rate decay')
-  parser.add_argument(
-      '--rho',
-      type=float,
-      default=0.9,
-      help='Adadelta: coefficient used for computing a running average of squared gradients')
+  parser.add_argument('--optimizer', type=str, default='SGD',
+                      help='optimization method')
+  parser.add_argument('--lr', type=float, default=0.001,
+                      help='learning rate')
+  parser.add_argument('--weight_decay', type=float, default=0.0,
+                      help='weight decay')
+  parser.add_argument('--momentum', type=float, default=0.0,
+                      help='SGD: learning rate momentum')
+  parser.add_argument('--nesterov', action='store_true',
+                      help='SGD: enables Nesterov momentum ')
+  parser.add_argument('--b1', type=float, default=0.9,
+                      help='Adam: beta 1 ')
+  parser.add_argument('--b2', type=float, default=0.999,
+                      help='Adam: beta 2')
+  parser.add_argument('--amsgrad', action='store_true',
+                      help='Adam: whether to use the AMSGrad variant')
+  parser.add_argument('--lr_decay', type=float, default=0.0,
+                      help='Adagrad: learning rate decay')
+  parser.add_argument('--rho', type=float, default=0.9,
+                      help='Adadelta: coefficient used for computing a running average of squared gradients')
   return parser
 
 
