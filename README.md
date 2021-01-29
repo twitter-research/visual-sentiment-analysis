@@ -43,6 +43,8 @@ To start training a model on the Visual SmileyNet dataset you can follow these s
 2. Extract the dataset and save the folder location in environment variable DATA_DIR with `export DATA_DIR=</dataset/location/Visual Smiley Dataset>`
 3. Run the training script with `sh sh_scripts/train_model.sh`. Alternatively, running `sh sh_scripts/train_model_toy.sh` will run on small subset of the dataset.
 
+Note that images are fetched online during training, which may slow down training runtime.
+
 ### Testing
 
 The script `test_model.sh` will test the model on a set of images.
