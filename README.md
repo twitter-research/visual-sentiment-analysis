@@ -4,7 +4,7 @@
 Visual SmileyNet is a library for training an image to emoji neural network model. It contains functionality used to produce the results in the paper:
 
 [Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis](https://arxiv.org/abs/1907.06160)
-Z. Al-Halah, A. Aitken, W. Shi, J. Caballero, *ICCV CroMoL workshop, 2019*
+Z. Al-Halah, A. Aitken, W. Shi, J. Caballero, *ICCV Workshops, 2019*
 
 For more information on this work please visit the [project page](https://www.cs.utexas.edu/~ziad/emoji_visual_sentiment.html).
 
@@ -60,7 +60,8 @@ Usage: `sh sh_scripts/predict_emojis.sh <path-to-model-file> <path-to-dir-of-ima
 	@inproceedings{visualsent_iccv_cromol2019,
 	    title={Smile, Be Happy :) Emoji Embedding for Visual Sentiment Analysis},
 	    author={Ziad Al-Halah and Andrew Aitken and Wenzhe Shi and Jose Caballero},
-	    booktitle={ICCV 2019 Workshop on Cross-Modal Learning in Real World},
+	    booktitle={IEEE International Conference on Computer Vision (ICCV) Workshops},
+	    arxivId = {1907.06160},
 	    year={2019}
 	}
 
