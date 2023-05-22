@@ -22,7 +22,7 @@ requirements = [
     'numpy==1.16.6',
     'Pillow>=7.1.0',
     'pandas==0.24.0',
-    'requests==2.22.0',
+    'requests==2.31.0',
 ]
 
 setup(
